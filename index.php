@@ -11,13 +11,13 @@
 </head>
 
 <body>
-<!-- History feature
-<div class="sidebar">
+<!-- History feature-->
+<!--<div class="sidebar">
   <p class="tablink sidebar-header">Create Chat</h2>
-    <button class="tablink" onclick="openTab(event, 'tab1')">Lorem ipsum</button>
-    <button class="tablink" onclick="openTab(event, 'tab2')">Dolor sit amet</button>
-</div>
--->
+    <button class="tablink" id="tab1" onclick="openTab(event, 'tab1')">Lorem ipsum</button>
+    <button class="tablink" id="tab2" onclick="openTab(event, 'tab2')">Dolor sit amet</button>
+</div>-->
+
 <section class="msger">
     <header class="msger-header">
         <div class="msger-header-title">
@@ -39,7 +39,7 @@
 </section>
 <script src='https://use.fontawesome.com/releases/v5.0.13/js/all.js'></script>
 <script src="./script.js"></script>
-<!-- History feature
+<!-- History feature-->
 <script>
 function openTab(evt, tabName) {
   var i, tabcontent, tablinks;
@@ -55,7 +55,7 @@ function openTab(evt, tabName) {
   evt.currentTarget.className += " active";
 }
 </script>
--->
+
 
 </body>
 

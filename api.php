@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Fetch the results and store them in an array
     $chat_history = array();
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+        $row['ai'] = nl2br($row['ai']);
         $chat_history[] = $row;
     }
 
@@ -32,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     $user_id = $_GET['user'];
 
     // Create a new SQLite database connection
-    $db = new SQLite3('db.sqlite');
+    /*$db = new SQLite3('db.sqlite');
 
     // Prepare and execute a DELETE statement to delete chat history records for the specified user ID
     $stmt = $db->prepare('DELETE FROM chat_history WHERE user_id = :user_id');
@@ -40,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     $result = $stmt->execute();
 
     // Close the database connection
-    $db->close();
+    $db->close();*/
 
     // Set the HTTP response status code to indicate success
     http_response_code(204); // No Content
