@@ -75,11 +75,12 @@ $complete = $open_ai->chat($opts, function ($curl_info, $data) use (&$txt) {
 
 
 // Prepare the UPDATE statement
-$stmt = $db->prepare('UPDATE main.chat_history SET ai = :ai WHERE id = :id');
-$row = ['id' => $chat_history_id, 'ai' => $txt];
+$stmt = $db->prepare('UPDATE main.chat_history SET ai = :ai, reply_time =:reply_time WHERE id = :id');
+$row = ['id' => $chat_history_id, 'ai' => $txt, 'reply_time' => date('Y-m-d H:i:s')];
 // Bind the parameters and execute the statement
 $stmt->bindValue(':id', $row['id']);
 $stmt->bindValue(':ai', $row['ai']);
+$stmt->bindValue(':reply_time', $row['reply_time']);
 $stmt->execute();
 
 //

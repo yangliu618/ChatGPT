@@ -57,7 +57,7 @@ function listChatHistory() {
         .then(chatHistory => {
             let list = '<div class="topicList"><ol>';
             for (const row of chatHistory) {
-                list += '<li><a href="?act=detail&user_id='+ row.user_id +'">' + row.human + '</a></li>';
+                list += '<li><a href="?act=detail&user_id='+ row.user_id +'">' + row.human + '</a> <span class="add_time">'+ (row.add_time ? row.add_time : '')  +'</span></li>';
             }
             list += '</ol></div>';
             appendTopic(PERSON_NAME, PERSON_IMG, "left", list);

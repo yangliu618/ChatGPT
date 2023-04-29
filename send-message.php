@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Create a new SQLite database connection
     $db = new SQLite3('db.sqlite');
     // Prepare the INSERT statement
-    $stmt = $db->prepare('INSERT INTO main.chat_history (user_id, human) VALUES (:user_id, :human)');
+    $stmt = $db->prepare('INSERT INTO main.chat_history (user_id, human, add_time) VALUES (:user_id, :human, :add_time)');
 
     // Bind the parameters and execute the statement for each row of data
     $row = ['user_id' => $id, 'human' => $msg];
