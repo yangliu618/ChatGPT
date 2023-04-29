@@ -63,6 +63,7 @@ function listChatHistory(){
     $result = $stmt->execute();
     $chat_history = array();
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+        $row['human'] = mb_substr($row['human'], 0, 30);
         $chat_history[] = $row;
     }
     $db->close();
