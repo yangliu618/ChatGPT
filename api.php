@@ -47,3 +47,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     http_response_code(204); // No Content
 
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $act = $_GET['act'] ?? '';
+    if ($act == 'listChatHistory') {
+        listChatHistory();
+    }
+}
+
+function listChatHistory(){
+    $db = new SQLite3('db.sqlite');
+    $user_id = $_POST['user_id'] ?? '';
+    // Prepare and execute a SELECT statement to retrieve the chat history data
+    $stmt = $db->prepare('SELECT human, user_id FROM chat_history GROUP BY user_id');
+    $result = $stmt->execute();
+    $chat_history = array();
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+        $chat_history[] = $row;
+    }
+    $db->close();
+    header('Content-Type: application/json');
+    echo json_encode($chat_history);
+}

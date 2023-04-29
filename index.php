@@ -13,9 +13,8 @@
 <body>
 <!-- History feature-->
 <!--<div class="sidebar">
-  <p class="tablink sidebar-header">Create Chat</h2>
-    <button class="tablink" id="tab1" onclick="openTab(event, 'tab1')">Lorem ipsum</button>
-    <button class="tablink" id="tab2" onclick="openTab(event, 'tab2')">Dolor sit amet</button>
+    <button class="tablink" id="tab1" onclick="openTab(event, 'tab1')">History Chat</button>
+    <button class="tablink" id="tab2" onclick="openTab(event, 'tab2')">New Topic</button>
 </div>-->
 
 <section class="msger">
@@ -25,7 +24,9 @@
             &nbsp;| ID: <input type="text" id="id" hidden> <span class="id_session"></span>
         </div>
         <div class="msger-header-options">
-            <button id="delete-button">Delete History</button>
+            <button class="btn_link" onclick="history.back();">返回</button>
+            <button class="btn_link" id="list-button">历史话题</button>
+            <button class="btn_link" id="delete-button">新话题</button>
         </div>
     </header>
 
@@ -37,10 +38,11 @@
         <button type="submit" class="msger-send-btn">Send</button>
     </form>
 </section>
-<script src='https://use.fontawesome.com/releases/v5.0.13/js/all.js'></script>
+<!--<script src='https://use.fontawesome.com/releases/v5.0.13/js/all.js'></script>-->
+<script src='./all.js'></script>
 <script src="./script.js"></script>
 <!-- History feature-->
-<script>
+<!--<script>
 function openTab(evt, tabName) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
@@ -54,7 +56,7 @@ function openTab(evt, tabName) {
   document.getElementById(tabName).style.display = "block";
   evt.currentTarget.className += " active";
 }
-</script>
+</script>-->
 
 
 </body>

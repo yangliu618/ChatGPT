@@ -1,10 +1,16 @@
-if (getCookie("id") == "") {
-    uuid = uuidv4()
-    document.cookie = "id=" + uuid
-    document.getElementById("id").value = uuid
+const act = getQueryString('act');
+if(act) {
+    document.getElementById("id").value = getQueryString('user_id')
 } else {
-    document.getElementById("id").value = getCookie("id");
+    if (getCookie("id") == "") {
+        uuid = uuidv4()
+        document.cookie = "id=" + uuid
+        document.getElementById("id").value = uuid
+    } else {
+        document.getElementById("id").value = getCookie("id");
+    }
 }
+
 const idSession = get(".id_session");
 const USER_ID = document.getElementById("id").value;
 idSession.textContent = USER_ID
@@ -28,7 +34,7 @@ function deleteChatHistory(userId) {
         return false
     }
 
-    fetch('/api.php?user=' + USER_ID, {
+    fetch('./api.php?user=' + USER_ID, {
         method: 'DELETE',
         headers: {'Content-Type': 'application/json'}
     })
@@ -42,11 +48,37 @@ function deleteChatHistory(userId) {
         .catch(error => console.error(error));
 }
 
+function listChatHistory() {
+    fetch('./api.php?act=listChatHistory&user=' + USER_ID, {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json'}
+    })
+        .then(response => response.json())
+        .then(chatHistory => {
+            let list = '<div class="topicList"><ol>';
+            for (const row of chatHistory) {
+                list += '<li><a href="?act=detail&user_id='+ row.user_id +'">' + row.human + '</a></li>';
+            }
+            list += '</ol></div>';
+            appendTopic(PERSON_NAME, PERSON_IMG, "left", list);
+            msgerForm.style('display', 'none');
+        })
+        .catch(error => console.error(error));
+}
+
 // Event listener for the Delete button click
 const deleteButton = document.querySelector('#delete-button');
 deleteButton.addEventListener('click', event => {
     event.preventDefault();
     deleteChatHistory(USER_ID);
+});
+
+// Event listener for the Delete button click
+const listButton = document.querySelector('#list-button');
+listButton.addEventListener('click', event => {
+    event.preventDefault();
+    listChatHistory();
+    history.replaceState(null, null, './');
 });
 
 msgerForm.addEventListener("submit", event => {
@@ -64,7 +96,7 @@ msgerForm.addEventListener("submit", event => {
 function getHistory() {
     var formData = new FormData();
     formData.append('user_id', USER_ID);
-    fetch('/api.php', {method: 'POST', body: formData})
+    fetch('./api.php', {method: 'POST', body: formData})
         .then(response => response.json())
         .then(chatHistory => {
             for (const row of chatHistory) {
@@ -73,6 +105,27 @@ function getHistory() {
             }
         })
         .catch(error => console.error(error));
+}
+
+function appendTopic(name, img, side, text, id) {
+    //   Simple solution for small apps
+    const msgHTML = `
+    <div class="msg ${side}-msg">
+      <div class="msg-img" style="background-image: url(${img})"></div>
+      <div class="msg-bubble">
+        <div class="msg-info">
+          <div class="msg-info-name">History Topic List</div>
+          <div class="msg-info-time">${formatDate(new Date())}</div>
+        </div>
+
+        <div class="msg-text" id=${id}>${text}</div>
+      </div>
+    </div>
+  `;
+
+    //msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+    msgerChat.innerHTML = msgHTML;
+    msgerChat.scrollTop += 500;
 }
 
 function appendMessage(name, img, side, text, id) {
@@ -177,4 +230,14 @@ function deleteAllCookies() {
         const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
         document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
     }
+}
+
+// 获取参数
+function getQueryString(name) {
+    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+        return unescape(r[2]);
+    }
+    return null;
 }
