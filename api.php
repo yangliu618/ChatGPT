@@ -59,7 +59,7 @@ function listChatHistory(){
     $db = new SQLite3('db.sqlite');
     $user_id = $_POST['user_id'] ?? '';
     // Prepare and execute a SELECT statement to retrieve the chat history data
-    $stmt = $db->prepare('SELECT id, human, user_id FROM chat_history WHERE user_id IN(SELECT MIN(id) FROM chat_history group by user_id) ORDER BY id DESC');
+    $stmt = $db->prepare('SELECT id, human, user_id FROM chat_history WHERE id IN(SELECT MIN(id) FROM chat_history group by user_id) ORDER BY id DESC');
     $result = $stmt->execute();
     $chat_history = array();
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
