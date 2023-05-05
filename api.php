@@ -31,21 +31,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     // Get the user ID to delete from the request body
     $user_id = $_GET['user'];
-
-    // Create a new SQLite database connection
-    /*$db = new SQLite3('db.sqlite');
-
-    // Prepare and execute a DELETE statement to delete chat history records for the specified user ID
-    $stmt = $db->prepare('DELETE FROM chat_history WHERE user_id = :user_id');
-    $stmt->bindValue(':user_id', $user_id, SQLITE3_TEXT);
-    $result = $stmt->execute();
-
-    // Close the database connection
-    $db->close();*/
-
-    // Set the HTTP response status code to indicate success
+    $act = $_GET['act'] ?? '';
+    if ($act == 'delTopic') {
+        $db = new SQLite3('db.sqlite');
+        $stmt = $db->prepare('DELETE FROM chat_history WHERE user_id = :user_id');
+        $stmt->bindValue(':user_id', $user_id, SQLITE3_TEXT);
+        $result = $stmt->execute();
+        $db->close();
+    }
     http_response_code(204); // No Content
-
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {

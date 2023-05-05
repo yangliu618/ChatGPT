@@ -56,14 +56,30 @@ function listChatHistory() {
         .then(response => response.json())
         .then(chatHistory => {
             let list = '<div class="topicList"><ol>';
+            let isAdmin = getCookie('isAdmin');
             for (const row of chatHistory) {
-                list += '<li><a href="?act=detail&user_id='+ row.user_id +'">' + row.human + '</a> <span class="add_time">'+ (row.add_time ? row.add_time : '')  +'</span></li>';
+                let delTopic = isAdmin == 'true' ? '<span class="delTopic" onclick="javascript:delTopic(\'' + row.user_id + '\')">[Del]</span>' : '';
+                list += '<li><a href="?act=detail&user_id='+ row.user_id +'">' + row.human + '</a> <span class="add_time">'+ (row.add_time ? row.add_time : '')  +'</span> '+ delTopic +' </li>';
             }
             list += '</ol></div>';
             appendTopic(PERSON_NAME, PERSON_IMG, "left", list);
             msgerForm.style('display', 'none');
         })
         .catch(error => console.error(error));
+}
+
+function delTopic(userId) {
+    if(window.confirm('Delete Topic?')){
+        fetch('./api.php?act=delTopic&user=' + userId, {
+            method: 'DELETE',
+            headers: {'Content-Type': 'application/json'}
+        })
+            //.then(response => response.json())
+            .then(chatHistory => {
+                listChatHistory();
+            })
+            .catch(error => console.error(error));
+    }
 }
 
 // Event listener for the Delete button click

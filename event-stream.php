@@ -9,6 +9,7 @@ const CONTENT = "content";
 const USER = "user";
 const SYS = "system";
 const ASSISTANT = "assistant";
+date_default_timezone_set('Asia/Shanghai');
 
 $open_ai_key = getenv('OPENAI_API_KEY');
 $open_ai = new OpenAi($open_ai_key);
@@ -51,7 +52,7 @@ header('Content-type: text/event-stream');
 header('Cache-Control: no-cache');
 $txt = "";
 $complete = $open_ai->chat($opts, function ($curl_info, $data) use (&$txt) {
-    //file_put_contents('./chat.log', __LINE__.':'.$data.PHP_EOL, FILE_APPEND);
+    file_put_contents('./chat.log', __LINE__.':'.$data.PHP_EOL, FILE_APPEND);
     if ($obj = json_decode($data) and $obj->error->message != "") {
         //file_put_contents('./chat.log', ':'.$data.PHP_EOL, FILE_APPEND);
         error_log(json_encode($obj->error->message));

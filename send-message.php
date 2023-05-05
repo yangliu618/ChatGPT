@@ -1,6 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+date_default_timezone_set('Asia/Shanghai');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['user_id'];
@@ -17,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt->bindValue(':user_id', $row['user_id']);
     $stmt->bindValue(':human', $row['human']);
+    $stmt->bindValue(':add_time', date('Y-m-d H:i:s'));
     $stmt->execute();
 
 
