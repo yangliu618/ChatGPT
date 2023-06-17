@@ -51,14 +51,16 @@ $opts = [
 header('Content-type: text/event-stream');
 header('Cache-Control: no-cache');
 $txt = "";
+//file_put_contents('./chat.log', $open_ai_key.PHP_EOL, FILE_APPEND);
 $complete = $open_ai->chat($opts, function ($curl_info, $data) use (&$txt) {
-    file_put_contents('./chat.log', __LINE__.':'.$data.PHP_EOL, FILE_APPEND);
+    file_put_contents('./chat.log', date('Y-m-d H:i:s').': '. $data . PHP_EOL, FILE_APPEND);
     if ($obj = json_decode($data) and $obj->error->message != "") {
         //file_put_contents('./chat.log', ':'.$data.PHP_EOL, FILE_APPEND);
         error_log(json_encode($obj->error->message));
-        /*if( $obj->error->code == 'context_length_exceeded') {
-            echo 'context_length_exceeded';
-        }*/
+        if( $obj->error->code == 'context_length_exceeded') {
+            $txt = $data = 'data: {"choices":[{"delta":{"content":"抱歉，该话题总内容超长了，请开启新话题！！！"},"index":0,"finish_reason":"stop"}]}'.PHP_EOL.PHP_EOL;
+            echo $data;
+        }
     } else {
         echo $data;
         $clean = str_replace("data: ", "", $data);

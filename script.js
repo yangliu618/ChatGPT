@@ -196,7 +196,6 @@ function sendMsg(msg) {
         })
         .catch(error => console.error(error));
 
-
 }
 
 // Utils
