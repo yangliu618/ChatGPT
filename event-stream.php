@@ -58,7 +58,8 @@ $complete = $open_ai->chat($opts, function ($curl_info, $data) use (&$txt) {
         //file_put_contents('./chat.log', ':'.$data.PHP_EOL, FILE_APPEND);
         error_log(json_encode($obj->error->message));
         if( $obj->error->code == 'context_length_exceeded') {
-            $txt = $data = 'data: {"choices":[{"delta":{"content":"抱歉，该话题总内容超长了，请开启新话题！！！"},"index":0,"finish_reason":"stop"}]}'.PHP_EOL.PHP_EOL;
+            $txt = '抱歉，该话题总内容超长了，请开启新话题！！！';
+            $data = 'data: {"choices":[{"delta":{"content":"'.$txt.'"},"index":0,"finish_reason":"stop"}]}'.PHP_EOL.PHP_EOL;
             echo $data;
         }
     } else {
